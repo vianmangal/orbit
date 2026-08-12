@@ -19,7 +19,7 @@ export const games: Game[] = [
     category: "Geography",
     url: "https://www.flagle.io/",
     minutes: 4,
-    accent: "#df6f45",
+    accent: "#A7AA63",
     icon: "flag",
   },
   {
@@ -29,7 +29,7 @@ export const games: Game[] = [
     category: "Visual",
     url: "https://angle.wtf/",
     minutes: 2,
-    accent: "#df5f8a",
+    accent: "#A7AA63",
     icon: "angle",
   },
   {
@@ -39,7 +39,7 @@ export const games: Game[] = [
     category: "Geography",
     url: "https://globle-game.com/",
     minutes: 5,
-    accent: "#438d70",
+    accent: "#A7AA63",
     icon: "globe",
   },
   {
@@ -49,8 +49,28 @@ export const games: Game[] = [
     category: "Geography",
     url: "https://globle-capitals.com/game",
     minutes: 5,
-    accent: "#417a9e",
+    accent: "#A7AA63",
     icon: "capital",
+  },
+  {
+    slug: "travle",
+    name: "Travle",
+    description: "Connect two countries through shared borders.",
+    category: "Geography",
+    url: "https://travle.earth/",
+    minutes: 5,
+    accent: "#A7AA63",
+    icon: "connections",
+  },
+  {
+    slug: "worldle",
+    name: "Worldle",
+    description: "Identify a country from its silhouette.",
+    category: "Geography",
+    url: "https://worldle.teuteuf.fr/",
+    minutes: 4,
+    accent: "#A7AA63",
+    icon: "globe",
   },
   {
     slug: "wordle",
@@ -59,7 +79,7 @@ export const games: Game[] = [
     category: "Words & logic",
     url: "https://www.nytimes.com/games/wordle/index.html",
     minutes: 4,
-    accent: "#c88434",
+    accent: "#A7AA63",
     icon: "word",
   },
   {
@@ -69,7 +89,7 @@ export const games: Game[] = [
     category: "Visual",
     url: "https://www.nytimes.com/puzzles/tiles",
     minutes: 4,
-    accent: "#7966a9",
+    accent: "#A7AA63",
     icon: "tiles",
   },
   {
@@ -79,7 +99,7 @@ export const games: Game[] = [
     category: "Words & logic",
     url: "https://www.nytimes.com/games/connections",
     minutes: 5,
-    accent: "#8f71ad",
+    accent: "#A7AA63",
     icon: "connections",
   },
   {
@@ -89,7 +109,7 @@ export const games: Game[] = [
     category: "Words & logic",
     url: "https://www.nytimes.com/games/strands",
     minutes: 5,
-    accent: "#2e8b91",
+    accent: "#A7AA63",
     icon: "strands",
   },
 ];

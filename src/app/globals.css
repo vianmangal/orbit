@@ -1,42 +1,27 @@
 @import "tailwindcss";
 
 :root {
-  --font-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --background: #f4f1e9;
-  --surface: #fffefa;
-  --surface-muted: #eceae3;
-  --text: #17302e;
-  --text-muted: #687774;
-  --text-faint: #94a09d;
-  --border: #d8dad4;
-  --border-subtle: #e4e4dd;
-  color-scheme: light;
-}
-
-:root.dark {
-  --background: #12201f;
-  --surface: #192a28;
-  --surface-muted: #243735;
-  --text: #f1eee4;
-  --text-muted: #a5b2ae;
-  --text-faint: #748783;
-  --border: #39504c;
-  --border-subtle: #2b403d;
+  --font-sans: "Colfax", var(--font-manrope), "Avenir Next", Avenir, Helvetica, Arial, sans-serif;
+  --background: #080B0C;
+  --surface: color-mix(in srgb, #080B0C 88%, #505039);
+  --surface-muted: #505039;
+  --text: #EAE6D2;
+  --text-muted: rgba(234,230,210,.78);
+  --text-faint: rgba(234,230,210,.6);
+  --border: #505039;
+  --border-subtle: rgba(167,170,99,.36);
   color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 html { min-width: 320px; background: var(--background); }
-body { min-height: 100vh; margin: 0; background: var(--background); color: var(--text); font-family: var(--font-mono); }
+body { min-height: 100vh; margin: 0; background: var(--background); color: var(--text); font-family: var(--font-sans); }
 button, input { font-family: inherit; }
-button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid rgba(64, 124, 114, .35); outline-offset: 2px; }
-::selection { color: #14322f; background: #efba91; }
+button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid #A7AA63; outline-offset: 2px; }
+::selection { color: #080B0C; background: #EAE6D2; }
 
-.brand-mark { display: inline-flex; align-items: center; gap: 11px; min-width: max-content; }
-.brand-orbit { position: relative; display: block; width: 31px; height: 31px; border: 1.5px solid #dd7654; border-radius: 50%; transform: rotate(-27deg); }
-.brand-orbit::before { content: ""; position: absolute; top: 50%; right: -4px; left: -4px; height: 8px; margin-top: -4px; border: 1.5px solid #dd7654; border-top: 0; border-bottom: 0; border-radius: 50%; }
-.brand-orbit span { position: absolute; top: 3px; right: -1px; width: 7px; height: 7px; border: 2px solid var(--surface); border-radius: 50%; background: #e38a66; }
-.brand-name { color: var(--text); font-family: var(--font-mono); font-size: 17px; letter-spacing: -.055em; }
+.brand-mark { display: inline-flex; align-items: center; min-width: max-content; }
+.brand-name { color: var(--text); font-family: var(--font-sans); font-size: 17px; letter-spacing: -.055em; }
 .brand-name strong { font-weight: 700; }
 
 @media (prefers-reduced-motion: reduce) {

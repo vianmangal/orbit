@@ -79,19 +79,16 @@ export function AuthForm({ configured }: { configured: boolean }) {
           <div className={styles.eyebrow}>
             <Sparkles size={15} /> Your daily game ritual
           </div>
-          <h1>Eight games.<br />One lovely routine.</h1>
+          <h1>Ten games.<br />One lovely routine.</h1>
           <p>
             Keep every daily puzzle in one calm place, remember what you played,
             and watch your streak grow.
           </p>
           <div className={styles.preview} aria-hidden="true">
             <div className={styles.previewHeader}>
-              <span>Today’s orbit</span><strong>3 of 8</strong>
+              <span>Today’s orbit</span><strong>3 of 10</strong>
             </div>
             <div className={styles.previewBar}><span /></div>
-            <div className={styles.previewCards}>
-              <span>FL</span><span>AN</span><span>GL</span><span>+5</span>
-            </div>
           </div>
         </div>
         <p className={styles.footnote}>Independent launcher · Your progress stays yours</p>

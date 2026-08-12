@@ -1,8 +1,8 @@
 # Daily Orbit
 
-Daily Orbit puts eight external daily games in one responsive dashboard and
-keeps each player's launches, completions, streak, ordering, and hidden games
-in sync with Supabase Auth and PostgreSQL.
+Daily Orbit puts ten external daily games in one responsive dashboard and
+keeps each player's launches, completions, and streak in sync with Supabase
+Auth and PostgreSQL.
 
 The games always open on their official websites. Daily Orbit does not embed,
 proxy, scrape, or reproduce them.
@@ -26,7 +26,7 @@ rows.
 
 ## Local setup
 
-Requirements: Node.js 20 or newer, npm, and a Supabase project.
+Requirements: Node.js 22 or newer, pnpm, and a Supabase project.
 
 1. Create a project at [Supabase](https://supabase.com/dashboard).
 2. Open the project's SQL editor and run
@@ -35,7 +35,7 @@ Requirements: Node.js 20 or newer, npm, and a Supabase project.
    key from the project's Connect dialog.
 
 ```bash
-npm install
+pnpm install
 cp .env.example .env.local
 ```
 
@@ -50,7 +50,7 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
 5. Start the app.
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000). Hosted Supabase projects
@@ -60,24 +60,27 @@ email before the first sign-in.
 ## Verification
 
 ```bash
-npm test
-npm run lint
-npm run build
+pnpm test
+pnpm lint
+pnpm build
 ```
 
 ## Phase 1 features
 
 - Supabase email/password signup, confirmation, login, persistent sessions,
   and sign-out
-- PostgreSQL progress and preference storage protected by RLS
-- Eight official daily-game launch cards
+- PostgreSQL progress storage protected by RLS
+- Ten official daily-game launch cards
 - Per-account started/completed tracking
 - Daily and all-time completion statistics
 - Consecutive-day activity streak
 - Category filters and a continue-next-game action
-- Account-specific game ordering and visibility
-- Responsive mobile/desktop layouts and light/dark themes
+- Responsive mobile and desktop layouts
 - Accessible controls, loading states, errors, and an independence disclaimer
+
+Lineup ordering and hiding, the theme switcher, estimated game times, and card
+icons were intentionally removed after UX review because they added complexity
+without improving the core daily-game experience.
 
 ## Deployment
 

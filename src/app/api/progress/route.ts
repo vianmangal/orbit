@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
-import { games, gameSlugs } from "@/lib/games";
+import { gameSlugs } from "@/lib/games";
 import { calculateCurrentStreak, isDateKey } from "@/lib/progress";
 import { getAuthenticatedContext } from "@/lib/supabase/auth";
 
@@ -39,38 +39,19 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const [progressResult, preferenceResult, stats] = await Promise.all([
+    const [progressResult, stats] = await Promise.all([
       context.supabase
         .from("game_progress")
         .select("game_slug, status")
         .eq("user_id", context.user.id)
         .eq("play_date", date),
-      context.supabase
-        .from("game_preferences")
-        .select("game_slug, position, hidden")
-        .eq("user_id", context.user.id)
-        .order("position", { ascending: true }),
       getStats(context.supabase, context.user.id, date),
     ]);
 
     if (progressResult.error) throw progressResult.error;
-    if (preferenceResult.error) throw preferenceResult.error;
-
-    const preferences = preferenceResult.data ?? [];
 
     return Response.json({
       progress: progressResult.data ?? [],
-      preferences:
-        preferences.length > 0
-          ? preferences.map((preference) => ({
-              ...preference,
-              hidden: preference.hidden ? 1 : 0,
-            }))
-          : games.map((game, position) => ({
-              game_slug: game.slug,
-              position,
-              hidden: 0,
-            })),
       stats,
     });
   } catch (error) {
