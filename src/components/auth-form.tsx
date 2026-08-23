@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { ArrowRight, Check, Eye, EyeOff, Sparkles } from "lucide-react";
 import { BrandMark } from "@/components/brand-mark";
 import { createClient } from "@/lib/supabase/client";
@@ -204,6 +205,10 @@ export function AuthForm({ configured }: { configured: boolean }) {
           <div className={styles.reassurance}>
             <Check size={15} /> No newsletters. No social account required.
           </div>
+          <p className={styles.legalLinks}>
+            By using Orbit, you agree to the <Link href="/terms">Terms</Link> and acknowledge
+            the <Link href="/privacy">Privacy Policy</Link>.
+          </p>
         </div>
       </section>
     </main>
