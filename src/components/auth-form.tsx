@@ -164,10 +164,14 @@ export function AuthForm({ configured }: { configured: boolean }) {
                   type={showPassword ? "text" : "password"}
                   autoComplete={mode === "sign-up" ? "new-password" : "current-password"}
                   required
-                  minLength={8}
+                  minLength={mode === "sign-up" ? 12 : 8}
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
-                  placeholder={mode === "sign-up" ? "At least 8 characters" : "Your password"}
+                  placeholder={
+                    mode === "sign-up"
+                      ? "12+ chars: upper, lower, number & symbol"
+                      : "Your password"
+                  }
                 />
                 <button
                   type="button"
