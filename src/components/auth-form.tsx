@@ -5,12 +5,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, Check, Eye, EyeOff, Sparkles } from "lucide-react";
 import { BrandMark } from "@/components/brand-mark";
+import { getPasswordPolicyError, PASSWORD_MIN_LENGTH } from "@/lib/password-policy";
 import { createClient } from "@/lib/supabase/client";
 import styles from "./auth-form.module.css";
 
 export function AuthForm({ configured }: { configured: boolean }) {
   const router = useRouter();
-  const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
+  const [mode, setMode] = useState<"sign-in" | "sign-up" | "forgot">("sign-in");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,6 +28,32 @@ export function AuthForm({ configured }: { configured: boolean }) {
 
     try {
       const supabase = createClient();
+
+      if (mode === "forgot") {
+        const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+          email.trim(),
+          { redirectTo: `${window.location.origin}/auth/reset-confirm` },
+        );
+
+        if (resetError) {
+          setError("We couldn’t send a reset link right now. Please try again shortly.");
+          return;
+        }
+
+        setMessage(
+          "If an account exists for that email, a password reset link is on its way.",
+        );
+        return;
+      }
+
+      if (mode === "sign-up") {
+        const policyError = getPasswordPolicyError(password);
+        if (policyError) {
+          setError(policyError);
+          return;
+        }
+      }
+
       const result =
         mode === "sign-up"
           ? await supabase.auth.signUp({
@@ -66,7 +93,7 @@ export function AuthForm({ configured }: { configured: boolean }) {
     }
   }
 
-  function changeMode(nextMode: "sign-in" | "sign-up") {
+  function changeMode(nextMode: "sign-in" | "sign-up" | "forgot") {
     setMode(nextMode);
     setError("");
     setMessage("");
@@ -120,11 +147,19 @@ export function AuthForm({ configured }: { configured: boolean }) {
           </div>
 
           <div className={styles.heading}>
-            <h2>{mode === "sign-in" ? "Welcome back" : "Start your orbit"}</h2>
+            <h2>
+              {mode === "sign-in"
+                ? "Welcome back"
+                : mode === "sign-up"
+                  ? "Start your orbit"
+                  : "Reset your password"}
+            </h2>
             <p>
               {mode === "sign-in"
                 ? "Your puzzles are right where you left them."
-                : "One account keeps your daily progress in sync."}
+                : mode === "sign-up"
+                  ? "One account keeps your daily progress in sync."
+                  : "Enter your email and we’ll send you a secure reset link."}
             </p>
           </div>
 
@@ -157,32 +192,44 @@ export function AuthForm({ configured }: { configured: boolean }) {
               />
             </label>
 
-            <label>
-              <span>Password</span>
-              <div className={styles.passwordField}>
-                <input
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete={mode === "sign-up" ? "new-password" : "current-password"}
-                  required
-                  minLength={mode === "sign-up" ? 12 : 8}
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  placeholder={
-                    mode === "sign-up"
-                      ? "12+ chars: upper, lower, number & symbol"
-                      : "Your password"
-                  }
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((value) => !value)}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-            </label>
+            {mode !== "forgot" && (
+              <label>
+                <span>Password</span>
+                <div className={styles.passwordField}>
+                  <input
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete={mode === "sign-up" ? "new-password" : "current-password"}
+                    required
+                    minLength={mode === "sign-up" ? PASSWORD_MIN_LENGTH : 8}
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    placeholder={
+                      mode === "sign-up"
+                        ? "12+ chars: upper, lower, number & symbol"
+                        : "Your password"
+                    }
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((value) => !value)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </label>
+            )}
+
+            {mode === "sign-in" && (
+              <button
+                type="button"
+                className={styles.textButton}
+                onClick={() => changeMode("forgot")}
+              >
+                Forgot password?
+              </button>
+            )}
 
             {!configured && (
               <p className={styles.error} role="alert">
@@ -197,9 +244,21 @@ export function AuthForm({ configured }: { configured: boolean }) {
                 ? "Just a moment…"
                 : mode === "sign-in"
                   ? "Enter your orbit"
-                  : "Create my account"}
+                  : mode === "sign-up"
+                    ? "Create my account"
+                    : "Send reset link"}
               {!pending && <ArrowRight size={18} />}
             </button>
+
+            {mode === "forgot" && (
+              <button
+                type="button"
+                className={styles.backButton}
+                onClick={() => changeMode("sign-in")}
+              >
+                Back to sign in
+              </button>
+            )}
           </form>
 
           <div className={styles.reassurance}>
