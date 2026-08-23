@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, Check, Eye, EyeOff, Sparkles } from "lucide-react";
+import { ArrowRight, Eye, EyeOff } from "lucide-react";
 import { BrandMark } from "@/components/brand-mark";
 import { getPasswordPolicyError, PASSWORD_MIN_LENGTH } from "@/lib/password-policy";
 import { createClient } from "@/lib/supabase/client";
@@ -104,20 +104,11 @@ export function AuthForm({ configured }: { configured: boolean }) {
       <section className={styles.story}>
         <BrandMark />
         <div className={styles.storyCopy}>
-          <div className={styles.eyebrow}>
-            <Sparkles size={15} /> Your daily game ritual
-          </div>
-          <h1>Ten games.<br />One lovely routine.</h1>
+          <h1>Just simply write your game routine.</h1>
           <p>
             Keep every daily puzzle in one calm place, remember what you played,
             and watch your streak grow.
           </p>
-          <div className={styles.preview} aria-hidden="true">
-            <div className={styles.previewHeader}>
-              <span>Today’s orbit</span><strong>3 of 10</strong>
-            </div>
-            <div className={styles.previewBar}><span /></div>
-          </div>
         </div>
         <p className={styles.footnote}>Independent launcher · Your progress stays yours</p>
       </section>
@@ -261,9 +252,6 @@ export function AuthForm({ configured }: { configured: boolean }) {
             )}
           </form>
 
-          <div className={styles.reassurance}>
-            <Check size={15} /> No newsletters. No social account required.
-          </div>
           <p className={styles.legalLinks}>
             By using Orbit, you agree to the <Link href="/terms">Terms</Link> and acknowledge
             the <Link href="/privacy">Privacy Policy</Link>.

@@ -9,7 +9,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Orbit — Your daily game routine",
+  title: "Orbit",
   description: "Keep your favorite daily games and progress in one calm place.",
 };
 
