@@ -84,4 +84,4 @@ without improving the core daily-game experience.
 
 ## Deployment
 
-[http://orbit.vian1.tech](orbit.vian1.tech)
+[Open Orbit](https://orbit.vian1.tech)
