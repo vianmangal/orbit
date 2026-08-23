@@ -326,7 +326,7 @@ export function Dashboard({
           )}
 
           <p className={styles.disclaimer}>
-            Daily Orbit is an independent launcher and is not affiliated with or endorsed by the listed game publishers.
+            Orbit is an independent launcher and is not affiliated with or endorsed by the listed game publishers.
             Games open on their official websites.
           </p>
         </section>

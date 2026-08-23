@@ -1,10 +1,10 @@
-# Daily Orbit
+# Orbit
 
-Daily Orbit puts ten external daily games in one responsive dashboard and
+Orbit puts ten external daily games in one responsive dashboard and
 keeps each player's launches, completions, and streak in sync with Supabase
 Auth and PostgreSQL.
 
-The games always open on their official websites. Daily Orbit does not embed,
+The games always open on their official websites. Orbit does not embed,
 proxy, scrape, or reproduce them.
 
 ## Why PostgreSQL here
@@ -16,7 +16,7 @@ multiple servers.
 
 PostgreSQL is a database server. It adds network setup and a managed service,
 but it handles concurrent users, shared remote data, backups, migrations, and
-database-level access rules. Those trade-offs fit Daily Orbit because login is
+database-level access rules. Those trade-offs fit Orbit because login is
 only useful if a player's progress follows them across browsers and devices.
 
 Supabase ties the two pieces together: Auth users live in the project's Auth

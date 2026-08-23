@@ -1,8 +1,8 @@
 export function BrandMark() {
   return (
-    <div className="brand-mark" aria-label="Daily Orbit">
+    <div className="brand-mark" aria-label="Orbit">
       <span className="brand-name">
-        Daily <strong>Orbit</strong>
+        <strong>Orbit</strong>
       </span>
     </div>
   );
