@@ -84,7 +84,4 @@ without improving the core daily-game experience.
 
 ## Deployment
 
-This repository is not configured or deployed to any hosting provider. Before
-a public release, configure the production Site URL and confirmation redirect,
-use custom SMTP, enable abuse protections, and review the game names and linking
-presentation with counsel.
+orbit.vian1.tech
