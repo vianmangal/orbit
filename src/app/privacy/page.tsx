@@ -4,84 +4,73 @@ import { LegalPage } from "@/components/legal-page";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Orbit",
-  description: "How Orbit collects, uses, and protects personal information.",
+  description: "How Orbit handles local progress and limited technical information.",
 };
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacy Policy" updated="August 24, 2026">
+    <LegalPage title="Privacy Policy" updated="August 26, 2026">
       <p>
-        Orbit collects only the information needed to provide accounts, keep daily-game
-        progress in sync, and protect the service. We do not sell personal information,
-        run third-party advertising, or use advertising trackers.
+        Orbit does not require an account and does not send your game progress to an Orbit
+        database. Your progress is stored locally in your browser. We do not sell personal
+        information, run third-party advertising, or use advertising trackers.
       </p>
 
-      <h2>Information we collect</h2>
+      <h2>Information Orbit stores</h2>
       <ul>
         <li>
-          <strong>Account information:</strong> your name, email address, account identifier,
-          and authentication metadata. Passwords are handled by Supabase Auth and stored only
-          as salted password hashes; Orbit cannot retrieve your original password.
+          <strong>Local progress:</strong> whether a listed game was started or completed and
+          the relevant date. This data remains in the browser where you use Orbit and does not
+          sync between browsers or devices.
         </li>
         <li>
-          <strong>Progress and preferences:</strong> the games in your lineup, whether a game
-          was started or completed, the relevant date, and streak or completion totals.
-        </li>
-        <li>
-          <strong>Technical information:</strong> essential authentication cookies and limited
-          request, device, security, and diagnostic information processed by our hosting and
-          database providers when you use the service.
+          <strong>Technical information:</strong> limited request, device, security, and
+          diagnostic information may be processed by our hosting provider when you visit Orbit.
         </li>
       </ul>
 
       <h2>How we use information</h2>
       <p>
-        We use this information to create and secure your account, authenticate you, sync your
-        progress across devices, display your preferences and statistics, prevent abuse,
-        troubleshoot problems, and maintain or improve Orbit. Depending on where you live, we
-        rely on performance of the service you request, our legitimate interests in operating
-        and securing Orbit, consent where required, and compliance with legal obligations.
+        Orbit reads local progress to display your daily status, completion total, and streak.
+        Limited hosting information may be used to deliver and secure the site, troubleshoot
+        problems, and maintain or improve Orbit.
       </p>
 
       <h2>Service providers and external games</h2>
       <p>
-        Supabase provides authentication and database services, and Vercel hosts the website.
-        These providers process information on our behalf under their own security and privacy
-        commitments. When you open a listed game, you leave Orbit and visit that publisher’s
-        website. That site may receive standard connection information and is governed by its
-        own privacy policy. Orbit is not affiliated with the listed game publishers.
+        Vercel hosts the website and may process standard connection and diagnostic information
+        under its own security and privacy commitments. When you open a listed game, you leave
+        Orbit and visit that publisher’s website. That site may receive standard connection
+        information and is governed by its own privacy policy. Orbit is not affiliated with the
+        listed game publishers.
       </p>
 
-      <h2>Cookies</h2>
+      <h2>Local storage and cookies</h2>
       <p>
-        Orbit uses strictly necessary cookies to keep you signed in, refresh your session, and
-        protect authenticated pages. We do not currently use advertising or analytics cookies.
-        If that changes, this policy and any legally required consent controls will be updated.
+        Orbit uses browser local storage to remember progress. Orbit does not use account,
+        advertising, or analytics cookies. If that changes, this policy and any legally required
+        consent controls will be updated.
       </p>
 
       <h2>Retention and deletion</h2>
       <p>
-        Account information and saved progress are retained while your account remains active
-        or as needed to provide Orbit. You may request access, correction, export, or deletion
-        by emailing us from your registered address. We aim to complete verified deletion
-        requests within 30 days, subject to limited legal, fraud-prevention, security, and
-        backup-retention requirements.
+        Local progress remains until you clear Orbit’s site data in your browser. Removing site
+        data permanently deletes that browser’s saved progress. Hosting logs are retained by
+        Vercel according to its applicable policies and service configuration.
       </p>
 
       <h2>Security</h2>
       <p>
-        Orbit uses HTTPS, Supabase password hashing, authenticated sessions, database access
-        controls, and row-level security intended to keep each account’s data separate. No
-        online service can guarantee absolute security, so use a unique password and contact us
-        if you believe your account has been compromised.
+        Orbit uses HTTPS and avoids collecting account credentials or transmitting game progress
+        to an Orbit database. Anyone with access to your browser profile may be able to view or
+        change locally stored progress.
       </p>
 
       <h2>Your choices and rights</h2>
       <p>
-        Depending on your location, you may have rights to access, correct, delete, restrict,
-        object to, or receive a copy of your personal information, withdraw consent, and lodge a
-        complaint with a data-protection authority. Contact us to exercise a right. We may ask
-        you to verify your identity before acting on a request.
+        You can view or delete local progress using your browser’s developer tools or site-data
+        settings. Depending on your location, you may also have rights concerning personal
+        information processed by the hosting provider. Contact us with privacy questions.
       </p>
 
       <h2>Children</h2>
@@ -93,8 +82,8 @@ export default function PrivacyPage() {
 
       <h2>International processing</h2>
       <p>
-        Our providers may process information outside your country. Where required, we rely on
-        appropriate contractual or legal safeguards for those transfers.
+        Our hosting provider may process limited technical information outside your country.
+        Where required, appropriate contractual or legal safeguards apply to those transfers.
       </p>
 
       <h2>Changes to this policy</h2>

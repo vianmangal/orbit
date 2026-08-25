@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <LegalPage title="Terms of Service" updated="August 24, 2026">
+    <LegalPage title="Terms of Service" updated="August 26, 2026">
       <p>
-        These Terms govern your use of Orbit. By creating an account or using the service, you
-        agree to them. If you do not agree, do not use Orbit.
+        These Terms govern your use of Orbit. By using the service, you agree to them. If you
+        do not agree, do not use Orbit.
       </p>
 
       <h2>Who may use Orbit</h2>
@@ -28,14 +28,6 @@ export default function TermsPage() {
         parties. It helps you open original games, remember what you played, and track your own
         progress. Orbit does not host, reproduce, control, or operate those games and is not
         affiliated with or endorsed by their publishers.
-      </p>
-
-      <h2>Your account</h2>
-      <p>
-        Provide accurate information, keep your password confidential, and notify us if you
-        suspect unauthorized access. You are responsible for activity through your account
-        unless applicable law provides otherwise. Do not share an account in a way that weakens
-        its security or impersonate another person.
       </p>
 
       <h2>Acceptable use</h2>
@@ -66,10 +58,11 @@ export default function TermsPage() {
 
       <h2>Changes, availability, and termination</h2>
       <p>
-        We may modify, suspend, or discontinue features and may restrict or terminate access
-        when reasonably necessary for security, legal compliance, service integrity, or a
-        material breach of these Terms. You may stop using Orbit at any time and request account
-        deletion under the <Link href="/privacy">Privacy Policy</Link>.
+        We may modify, suspend, or discontinue features and may restrict access when reasonably
+        necessary for security, legal compliance, service integrity, or a material breach of
+        these Terms. You may stop using Orbit at any time. You can remove locally stored Orbit
+        progress by clearing this site’s data in your browser. See the{" "}
+        <Link href="/privacy">Privacy Policy</Link>.
       </p>
 
       <h2>Disclaimer</h2>

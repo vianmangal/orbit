@@ -1,16 +1,6 @@
 import type { NextConfig } from "next";
 
 const isDevelopment = process.env.NODE_ENV === "development";
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseOrigin = (() => {
-  if (!supabaseUrl) return "";
-
-  try {
-    return new URL(supabaseUrl).origin;
-  } catch {
-    return "";
-  }
-})();
 
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -18,7 +8,7 @@ const contentSecurityPolicy = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data:",
   "font-src 'self'",
-  `connect-src 'self'${supabaseOrigin ? ` ${supabaseOrigin}` : ""}`,
+  "connect-src 'self'",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",

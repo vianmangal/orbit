@@ -1,29 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   Check,
   Circle,
   ExternalLink,
   Flame,
-  LogOut,
   Sparkles,
   Trophy,
   X,
 } from "lucide-react";
 import { BrandMark } from "@/components/brand-mark";
-import { Game, GameCategory, games } from "@/lib/games";
-import { createClient } from "@/lib/supabase/client";
+import { Game, GameCategory, games, gameSlugs } from "@/lib/games";
+import { calculateCurrentStreak } from "@/lib/progress";
 import styles from "./dashboard.module.css";
 
 type ProgressStatus = "started" | "completed";
 
-type ProgressResponse = {
-  progress: { game_slug: string; status: ProgressStatus }[];
-  stats: { streak: number; completedGames: number };
-};
+type ProgressByDate = Record<string, Record<string, ProgressStatus>>;
+
+const STORAGE_KEY = "orbit-progress-v1";
 
 const categories: Array<"All" | GameCategory> = [
   "All",
@@ -38,15 +35,34 @@ function localDateKey() {
   return new Date(now.getTime() - offset).toISOString().slice(0, 10);
 }
 
-export function Dashboard({
-  user,
-}: {
-  user: { name: string; email: string };
-}) {
-  const router = useRouter();
+function loadLocalProgress(): ProgressByDate {
+  try {
+    const value: unknown = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "{}");
+    if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+
+    const progress: ProgressByDate = {};
+    for (const [date, statuses] of Object.entries(value)) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !statuses || typeof statuses !== "object") {
+        continue;
+      }
+
+      const validStatuses: Record<string, ProgressStatus> = {};
+      for (const [slug, status] of Object.entries(statuses)) {
+        if (gameSlugs.has(slug) && (status === "started" || status === "completed")) {
+          validStatuses[slug] = status;
+        }
+      }
+      progress[date] = validStatuses;
+    }
+    return progress;
+  } catch {
+    return {};
+  }
+}
+
+export function Dashboard() {
   const [date, setDate] = useState("");
-  const [statusBySlug, setStatusBySlug] = useState<Record<string, ProgressStatus>>({});
-  const [stats, setStats] = useState({ streak: 0, completedGames: 0 });
+  const [progressByDate, setProgressByDate] = useState<ProgressByDate>({});
   const [filter, setFilter] = useState<(typeof categories)[number]>("All");
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState("");
@@ -54,39 +70,14 @@ export function Dashboard({
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
       setDate(localDateKey());
+      setProgressByDate(loadLocalProgress());
+      setLoading(false);
     });
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
-  useEffect(() => {
-    if (!date) return;
-    const controller = new AbortController();
-
-    async function loadProgress() {
-      try {
-        const response = await fetch(`/api/progress?date=${date}`, {
-          signal: controller.signal,
-        });
-        if (!response.ok) throw new Error("Could not load progress");
-        const data = (await response.json()) as ProgressResponse;
-        setStatusBySlug(
-          Object.fromEntries(data.progress.map((item) => [item.game_slug, item.status])),
-        );
-        setStats(data.stats);
-      } catch (error) {
-        if ((error as Error).name !== "AbortError") {
-          setNotice("Your progress couldn’t be loaded. Try refreshing the page.");
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    void loadProgress();
-    return () => controller.abort();
-  }, [date]);
-
   const visibleGames = games;
+  const statusBySlug = date ? progressByDate[date] ?? {} : {};
   const filteredGames = visibleGames.filter(
     (game) => filter === "All" || game.category === filter,
   );
@@ -99,54 +90,41 @@ export function Dashboard({
   const nextGame = visibleGames.find(
     (game) => statusBySlug[game.slug] !== "completed",
   );
-  async function updateProgress(gameSlug: string, status: ProgressStatus) {
-    const previousStatus = statusBySlug[gameSlug];
-    const completedDelta =
-      status === "completed" && previousStatus !== "completed"
-        ? 1
-        : status !== "completed" && previousStatus === "completed"
-          ? -1
-          : 0;
-    setStatusBySlug((current) => ({ ...current, [gameSlug]: status }));
-    if (completedDelta !== 0) {
-      setStats((current) => ({
-        ...current,
-        completedGames: Math.max(0, current.completedGames + completedDelta),
-      }));
-    }
+  const completedDates = Object.entries(progressByDate)
+    .filter(([, statuses]) => Object.values(statuses).includes("completed"))
+    .map(([progressDate]) => progressDate);
+  const stats = {
+    streak: date ? calculateCurrentStreak(completedDates, date) : 0,
+    completedGames: Object.values(progressByDate).reduce(
+      (total, statuses) =>
+        total + Object.values(statuses).filter((status) => status === "completed").length,
+      0,
+    ),
+  };
 
-    try {
-      const response = await fetch("/api/progress", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ gameSlug, date, status }),
-      });
-      if (!response.ok) throw new Error("Could not save progress");
-      const data = (await response.json()) as {
-        stats: { streak: number; completedGames: number };
+  function updateProgress(gameSlug: string, status: ProgressStatus) {
+    if (!date) return;
+
+    setProgressByDate((current) => {
+      const next = {
+        ...current,
+        [date]: { ...current[date], [gameSlug]: status },
       };
-      setStats(data.stats);
-    } catch {
-      setStatusBySlug((current) => {
-        const next = { ...current };
-        if (previousStatus) next[gameSlug] = previousStatus;
-        else delete next[gameSlug];
-        return next;
-      });
-      if (completedDelta !== 0) {
-        setStats((current) => ({
-          ...current,
-          completedGames: Math.max(0, current.completedGames - completedDelta),
-        }));
+
+      try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        setNotice("Your browser could not save that update.");
       }
-      setNotice("That update didn’t save. Please try again.");
-    }
+
+      return next;
+    });
   }
 
   function openGame(game: Game) {
     if (!date) return;
     if (!statusBySlug[game.slug]) {
-      void updateProgress(game.slug, "started");
+      updateProgress(game.slug, "started");
     }
     window.open(game.url, "_blank", "noopener,noreferrer");
   }
@@ -155,18 +133,7 @@ export function Dashboard({
     if (!date) return;
     const nextStatus =
       statusBySlug[game.slug] === "completed" ? "started" : "completed";
-    void updateProgress(game.slug, nextStatus);
-  }
-
-  async function signOut() {
-    const supabase = createClient();
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      setNotice("Sign out failed. Please try again.");
-      return;
-    }
-    router.replace("/login");
-    router.refresh();
+    updateProgress(game.slug, nextStatus);
   }
 
   if (loading) {
@@ -175,11 +142,6 @@ export function Dashboard({
         <header className={styles.header}>
           <div className={styles.headerInner}>
             <BrandMark />
-            <div className={styles.accountActions}>
-              <div className={styles.avatar} title={user.email}>
-                {user.name.slice(0, 1).toUpperCase()}
-              </div>
-            </div>
           </div>
         </header>
         <main className={styles.main}>
@@ -190,7 +152,7 @@ export function Dashboard({
               <div className={`${styles.loadingBlock} ${styles.loadingCard}`} key={game.slug} />
             ))}
           </div>
-          <span className={styles.srOnly}>Loading your account and game progress…</span>
+          <span className={styles.srOnly}>Loading your games and local progress...</span>
         </main>
       </div>
     );
@@ -204,21 +166,13 @@ export function Dashboard({
           <nav className={styles.nav} aria-label="Primary navigation">
             <span className={styles.activeNav}>Today</span>
           </nav>
-          <div className={styles.accountActions}>
-            <div className={styles.avatar} title={user.email}>
-              {user.name.slice(0, 1).toUpperCase()}
-            </div>
-            <button className={styles.iconButton} type="button" onClick={signOut} aria-label="Sign out">
-              <LogOut size={18} />
-            </button>
-          </div>
         </div>
       </header>
 
       <main className={styles.main}>
         <section className={styles.welcome}>
           <div>
-            <h1>Welcome, {user.name.split(" ")[0]}.</h1>
+            <h1>Your game routine.</h1>
             <p className={styles.subtitle}>A little brain stretch, all in one place.</p>
           </div>
         </section>
