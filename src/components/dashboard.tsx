@@ -258,13 +258,12 @@ export function Dashboard() {
                       </button>
                     </div>
                     <div className={styles.cardCopy}>
-                      <span className={styles.category}>{game.category}</span>
                       <h3>{game.name}</h3>
                       <p>{game.description}</p>
                     </div>
                     <div className={styles.cardFooter}>
                       <button type="button" onClick={() => openGame(game)}>
-                        {status === "started" ? "Continue" : completed ? "Play again" : "Play original"}
+                        {status === "started" ? "Continue" : completed ? "Play again" : "Play"}
                         <ExternalLink size={14} />
                       </button>
                     </div>

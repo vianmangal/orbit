@@ -47,7 +47,6 @@
 .completionButton { display: flex; height: 30px; align-items: center; gap: 5px; padding: 0 8px; border: 1px solid var(--border-subtle); border-radius: 9px; color: var(--text-faint); background: transparent; cursor: pointer; font: inherit; font-size: 10px; font-weight: 750; }
 .completionButton.checked { border-color: #A7AA63; color: #080B0C; background: #A7AA63; }
 .cardCopy { margin: 25px 0 20px; }
-.category { color: #A7AA63; font-size: 9px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
 .cardCopy h3 { margin: 7px 0 8px; font-family: inherit; font-size: 21px; font-weight: 750; letter-spacing: -.055em; }
 .cardCopy p { margin: 0; color: var(--text-muted); font-size: 12px; line-height: 1.55; }
 .cardFooter { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-subtle); }
